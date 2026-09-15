@@ -21,6 +21,7 @@ const getLoginUrl = (req, res) => {
     apiInstance.token(apiVersion, data, (error, data, response) => {
         if (error) {
           console.error(error.message);
+          res.status(500).json({ success: false, message: 'Authentication failed' });
         } else {
           console.log('API called successfully. Returned data: ' + JSON.stringify(data.email));
           const data_ =  data
@@ -30,15 +31,20 @@ const getLoginUrl = (req, res) => {
             exchanges : data_.exchanges , 
             userId : data_.userId , 
             userName : data_.userName , 
-            userType : data_.userType
+            userType : data_.userType,
+            accessToken: access_token
           }
+          
+          Initializewebsoket(access_token)
+          
+          // Redirect to trading dashboard with user data
+          const params = new URLSearchParams(new_data).toString();
+          res.redirect(`/trading-dashboard?${params}`);
         }
-        Initializewebsoket(access_token)
-        sendSuccess(res, new_data);
     })
     } catch (error) {
         console.log(error);
-      sendError(res, 'handleCallback', 'Error during authentication.');
+        res.status(500).json({ success: false, message: 'Error during authentication.' });
     }
   };
 

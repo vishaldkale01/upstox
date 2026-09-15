@@ -8,10 +8,16 @@ const { HistoryCandleData, getIntraDayCandleData } = require('../controllers/His
 const marginDetails = require('../controllers/MargineDetails/Margine');
 const { placeOrder, getOrderBook, getOrderHistory, modifyOrder, historicalTrades } = require('../controllers/Order/order');
 const { getHolding } = require('../controllers/portfollio/portfollio');
+const { startTrading, stopTrading, getSessionStatus, getTradingDashboard } = require('../controllers/trading/trading-with-python-backend');
 
 
 router.get('/login', getLoginUrl);
 router.get('/callback', handleCallback);
+router.get('/trading-dashboard', getTradingDashboard);
+router.post('/start-trading', startTrading);
+router.post('/stop-trading', stopTrading);
+router.get('/trading-status', getSessionStatus);
+router.get('/user-sessions', getSessionStatus);
 router.get('/user/profile', getUserProfile);
 router.get('/user/get-funds-and-margin', getUserProfileFundAndMargine);
 router.get('/charges/brokerage', getBrokerage);
